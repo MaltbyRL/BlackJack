@@ -1,0 +1,36 @@
+ .gameBoard {
+  width: 70vw;
+  background-image: url("https://www.videoslots.com/file_uploads/backgrounds/Blackjack_background.jpg");
+  background-size: 70vw;
+  background-size: stretch;
+  height: 65vw;
+  color: white;
+}
+
+.hold{
+  background-color: red;
+}
+.hit{
+  background-color: green;
+}
+#startOver {
+  background-color: orange;
+}
+
+#winBox {
+  font-style: italic;
+  font-family: cursive;
+  font-size: 20px;
+  color: yellow;
+}
+
+img{
+  display: inline-block;
+}
+
+#playersHand {
+  width: 100%;
+}
+#dealersHand {
+  width: 100%;
+}

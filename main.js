@@ -1,15 +1,20 @@
 "use strict";
 $(document).ready(init);
 var playersHand = [];
+var playersCards = [];
 var playerScore = 0;
-var dealersCard = [];
+var dealersHand = [];
+var dealersCards = [];
 var dealerScore = 0;
 var deltCard = []
-
+var playerAces = 0;
+var dealerAces = 0;
 function init(){
   initialDeal();
+  //$('#hit').getScript("cards/",function(){console.log("getScript working")})
   $('#hit').on('click', playerHits);
   $('#hold').on('click', playerHolds);
+  $("#startOver").on('click', playAgain);
   scoreTracker();
 }
 
@@ -75,7 +80,8 @@ var deck = {
 }
 
 var cards = Object.keys(deck);
-
+var deltCardimg = ""
+var cardImg = ""
 
 
   //////////////////////////////////  Used for initial deal. Send to player deck and add to player score.
@@ -86,7 +92,10 @@ var pullCard = function() {
   console.log('pullcard started');
 
   var i = Math.floor((Math.random() * cards.length) );
-  deltCard = cards[i] ;
+  deltCard = cards[i];
+  //deltCardimg.attr('src', "'" + "cards/" + deltCard + ".png" + "'")
+  deltCardimg = "'" + "/cards/" + deltCard + ".png" + "'"
+  cardImg = "<img src= "+deltCardimg+" alt=" + deltCard + " >"
   cards.splice(i,1);
   console.log('deltCard');
   return deltCard;
@@ -101,14 +110,24 @@ function initialDeal(){
   for(var i = 0 ; i < 2 ; i++ ) {
     pullCard(deltCard);
     playersHand.push(deltCard);
+    playersCards.push(deltCardimg)
     playerScore += deck[deltCard];
+    $('#playersHand').prepend(cardImg)
     console.log("Players hand:", deltCard);
+    if(deck[deltCard] === 11){
+        playerAces = playerAces + 1;
+    }
   }
   pullCard(deltCard)
-  dealersCard.push(deltCard);
+  dealersHand.push(deltCard);
+  dealersCards.push("<img src="+deltCardimg+">")
   dealerScore += deck[deltCard];
   console.log("dealers card", deltCard);
   console.log('initialDeal done');
+  $('#dealersHand').prepend(cardImg)
+  if(deck[deltCard] === 11){
+      dealerAces = dealerAces + 1
+  }
 };
 
 
@@ -121,15 +140,27 @@ function playerHits() {
   playersHand.push(deltCard);
   console.log(playersHand);
   playerScore += deck[deltCard];
-  scoreTracker();
 
+  if (deck[deltCard] === 11){playerAces = playerAces + 1};
+
+  playersCards.push("<img src="+deltCardimg+">");
+  $('#playersHand').prepend(cardImg)
+  scoreTracker();
 }
 
 function scoreTracker() {
-  $('.hit').text(playerScore);
-  $('.hold').text(dealerScore);
-  if(playerScore > 21){
-    alert('you bust hahaha')
+  $('.hit').text("Hit");
+  $('.hold').text("Hold");
+  $(".playScore").text(playerScore);
+  $(".dealScore").text(dealerScore);
+
+  // $('#dealersHand').text(dealersCards);
+  if(playerScore > 21 && playerAces > 0){
+    playerScore = playerScore - 10;
+    playerAces = playerAces - 1
+  }else if(playerScore > 21){
+    $("#winBox").text('You Bust AAAHhahahah... AAHahaha')
+
   }
 }
 
@@ -138,8 +169,29 @@ function scoreTracker() {
 
 
 ///////////////////////////////////  Display window with final cards in play and final score
-////have current score
+////playAgain
 //////////////////////////////////
+function playAgain(){
+  playersHand = [];
+  playersCards = [];
+  playerScore = 0;
+  dealersHand = [];
+  dealersCards = [];
+  dealerScore = 0;
+  deltCard = []
+  playerAces = 0;
+  dealerAces = 0;
+  cards = Object.keys(deck);
+  $("#winBox").empty();
+  $('#playersHand').empty();
+  $('#dealersHand').empty();
+  scoreTracker();
+  initialDeal();
+  scoreTracker();
+}
+
+
+
 
 
 
@@ -155,13 +207,19 @@ function scoreTracker() {
 function playerHolds(){
   while(dealerScore < 18){
     pullCard();
+    $('#dealersHand').prepend(cardImg)
+    if(deck[deltCard] === 11){dealerAces = dealerAces + 1};
     dealerScore += deck[deltCard];
-    dealersCard.push(deltCard);
+    dealersHand.push(deltCard);
+    dealersCards.push(deltCardimg);
     scoreTracker();
-  }if (dealerScore > playerScore && dealerScore < 22){
+  }if(dealerScore > 21 && dealerAces > 0){
+    dealerScore = dealerScore - 10;
+    dealerAces = dealerAces - 1
+  }else if (dealerScore > playerScore && dealerScore < 22){
     scoreTracker();
-    alert("hahahahaha dealer wins")
+    $("#winBox").text("hahahahaha dealer wins")
   }else{
-    alert('whatever you win');
+    $("#winBox").text('whatever... you win');
   }
 }

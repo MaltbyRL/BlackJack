@@ -3,14 +3,46 @@
 <head>
   <meta charset="UTF-8">
   <title>BlackJack</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" class="css">
+    <link rel="stylesheet" href="style.css" class="css">
+    <img href = "cards/">
 </head>
 <body>
-  <button id="hit" class="hit">Player Score
-    <span class="playerScore"></span>
-  </button>
-  <button id="hold" class="hold">
-    <span class="">dealerScore</span>
-  </button>
+
+
+  <br>
+    <div class="container">
+      <div class="gameBoard">
+        <div class="row">
+          <div class="col-lg-4"></div>
+          <div class="col-lg-4">Welcome to BLACKJACK!</div>
+          <div class="col-lg-4"></div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-4">Dealers Score<div class="dealScore"></div></div>
+          <div class="col-lg-4"><button id="hold" class="hold">Dealers Score<span class="dealerScore"></span></button></div><br>
+        </div><br>
+        <div class="row">
+          <div class="col-lg-12 pagination-centered"><div class="col-lg-4" id="dealersHand"></div></div>
+        </div>
+
+        <div class="row">
+        <div class="col-lg-4">Players Score<div class="playScore"></div></div>
+        <div class="col-lg-4"><button id="hit" class="hit">Player Score<span class="playerScore"></span></button></div><br>
+
+        </div><br>
+        <div class="row">
+          <div class="col-lg-12 pagination-centered"><div class="col-lg-4" id="playersHand"></div></div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-6" id="winBox"></div><br>
+          <div class="col-lg-6"><button id= "startOver">start over?</button></div>
+        </div>
+      </div>
+    </div>
+
 
 <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
 <script src="main.js"></script>
